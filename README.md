@@ -1,0 +1,3 @@
+- @netlify/functions для міграції Хасури
+- jsonwebtoken
+- GraphQL Code Generator для автоматичного генерування типів та інтерфейсів зі схеми Хасури graphql-request typed SDK (npm run codegen  кодогенерація)
