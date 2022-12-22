@@ -118,10 +118,8 @@ export type Admin_Bool_Exp = {
 
 /** unique or primary key constraints on table "admin" */
 export enum Admin_Constraint {
-  /** unique or primary key constraint on columns "id" */
-  AdminPkey = 'admin_pkey',
   /** unique or primary key constraint on columns "username" */
-  AdminUsernameKey = 'admin_username_key'
+  AdminPkey = 'admin_pkey'
 }
 
 /** input type for inserting data into table "admin" */
@@ -172,7 +170,7 @@ export type Admin_Order_By = {
 
 /** primary key columns input for table: admin */
 export type Admin_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  username: Scalars['String'];
 };
 
 /** select columns of table "admin" */
@@ -543,7 +541,7 @@ export type Mutation_RootDelete_AdminArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Admin_By_PkArgs = {
-  id: Scalars['uuid'];
+  username: Scalars['String'];
 };
 
 
@@ -702,7 +700,7 @@ export type Query_RootAdmin_AggregateArgs = {
 
 
 export type Query_RootAdmin_By_PkArgs = {
-  id: Scalars['uuid'];
+  username: Scalars['String'];
 };
 
 
@@ -768,7 +766,7 @@ export type Subscription_RootAdmin_AggregateArgs = {
 
 
 export type Subscription_RootAdmin_By_PkArgs = {
-  id: Scalars['uuid'];
+  username: Scalars['String'];
 };
 
 
@@ -821,19 +819,17 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
-export type GetAdminByUserNameQueryVariables = Exact<{
+export type GetAdminByUsernameQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type GetAdminByUserNameQuery = { __typename?: 'query_root', admin: Array<{ __typename?: 'admin', id: any, password: string }> };
+export type GetAdminByUsernameQuery = { __typename?: 'query_root', admin: Array<{ __typename?: 'admin', id: any, password: string }> };
 
-export type GetAdminByIdQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
+export type GetAdminsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAdminByIdQuery = { __typename?: 'query_root', admin_by_pk?: { __typename?: 'admin', id: any, username: string } | null };
+export type GetAdminsQuery = { __typename?: 'query_root', admin: Array<{ __typename?: 'admin', id: any }> };
 
 export type InsertAdminMutationVariables = Exact<{
   username: Scalars['String'];
@@ -844,19 +840,18 @@ export type InsertAdminMutationVariables = Exact<{
 export type InsertAdminMutation = { __typename?: 'mutation_root', insert_admin_one?: { __typename?: 'admin', id: any } | null };
 
 
-export const GetAdminByUserNameDocument = gql`
-    query GetAdminByUserName($username: String!) {
+export const GetAdminByUsernameDocument = gql`
+    query GetAdminByUsername($username: String!) {
   admin(where: {username: {_eq: $username}}) {
     id
     password
   }
 }
     `;
-export const GetAdminByIdDocument = gql`
-    query GetAdminById($id: uuid!) {
-  admin_by_pk(id: $id) {
+export const GetAdminsDocument = gql`
+    query GetAdmins {
+  admin {
     id
-    username
   }
 }
     `;
@@ -875,11 +870,11 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    GetAdminByUserName(variables: GetAdminByUserNameQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminByUserNameQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByUserNameQuery>(GetAdminByUserNameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdminByUserName', 'query');
+    GetAdminByUsername(variables: GetAdminByUsernameQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminByUsernameQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByUsernameQuery>(GetAdminByUsernameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdminByUsername', 'query');
     },
-    GetAdminById(variables: GetAdminByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByIdQuery>(GetAdminByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdminById', 'query');
+    GetAdmins(variables?: GetAdminsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAdminsQuery>(GetAdminsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdmins', 'query');
     },
     InsertAdmin(variables: InsertAdminMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<InsertAdminMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<InsertAdminMutation>(InsertAdminDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'InsertAdmin', 'mutation');
