@@ -23,6 +23,16 @@ export type AdminGetMeOutput = {
   username: Scalars['String'];
 };
 
+export type AdminLoginInput = {
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type AdminLoginOutput = {
+  __typename?: 'AdminLoginOutput';
+  accessToken: Scalars['String'];
+};
+
 export type AdminRegisterInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -31,6 +41,15 @@ export type AdminRegisterInput = {
 export type AdminRegisterOutput = {
   __typename?: 'AdminRegisterOutput';
   accessToken: Scalars['String'];
+};
+
+export type CloudinarySignatureOutput = {
+  __typename?: 'CloudinarySignatureOutput';
+  apiKey: Scalars['String'];
+  cloudName: Scalars['String'];
+  publicId: Scalars['String'];
+  signature: Scalars['String'];
+  timestamp: Scalars['Int'];
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -74,16 +93,6 @@ export type Admin = {
   username: Scalars['String'];
 };
 
-export type AdminLoginInput = {
-  password: Scalars['String'];
-  username: Scalars['String'];
-};
-
-export type AdminLoginOutput = {
-  __typename?: 'adminLoginOutput';
-  accessToken: Scalars['String'];
-};
-
 /** aggregated selection of "admin" */
 export type Admin_Aggregate = {
   __typename?: 'admin_aggregate';
@@ -118,8 +127,10 @@ export type Admin_Bool_Exp = {
 
 /** unique or primary key constraints on table "admin" */
 export enum Admin_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  AdminPkey = 'admin_pkey',
   /** unique or primary key constraint on columns "username" */
-  AdminPkey = 'admin_pkey'
+  AdminUsernameKey = 'admin_username_key'
 }
 
 /** input type for inserting data into table "admin" */
@@ -170,7 +181,7 @@ export type Admin_Order_By = {
 
 /** primary key columns input for table: admin */
 export type Admin_Pk_Columns_Input = {
-  username: Scalars['String'];
+  id: Scalars['uuid'];
 };
 
 /** select columns of table "admin" */
@@ -219,15 +230,6 @@ export type Admin_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Admin_Set_Input>;
   where: Admin_Bool_Exp;
-};
-
-export type CloudinariSignatureOutput = {
-  __typename?: 'cloudinariSignatureOutput';
-  apiKey: Scalars['String'];
-  cloudName: Scalars['String'];
-  publicId: Scalars['String'];
-  signature: Scalars['String'];
-  timestamp: Scalars['Int'];
 };
 
 /** ordering argument of a cursor */
@@ -494,7 +496,7 @@ export type Menu_Variance_Fields = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
-  /** Admin registration */
+  /** Admin register */
   adminRegister?: Maybe<AdminRegisterOutput>;
   /** delete data from the table: "admin" */
   delete_admin?: Maybe<Admin_Mutation_Response>;
@@ -541,7 +543,7 @@ export type Mutation_RootDelete_AdminArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Admin_By_PkArgs = {
-  username: Scalars['String'];
+  id: Scalars['uuid'];
 };
 
 
@@ -659,6 +661,7 @@ export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "admin" */
   admin: Array<Admin>;
+  /** Admin get me */
   adminGetMe?: Maybe<AdminGetMeOutput>;
   /** Admin login */
   adminLogin?: Maybe<AdminLoginOutput>;
@@ -666,7 +669,8 @@ export type Query_Root = {
   admin_aggregate: Admin_Aggregate;
   /** fetch data from the table: "admin" using primary key columns */
   admin_by_pk?: Maybe<Admin>;
-  cloudinariSignature?: Maybe<CloudinariSignatureOutput>;
+  /** Cloud signature */
+  cloudinarySignature?: Maybe<CloudinarySignatureOutput>;
   /** fetch data from the table: "menu" */
   menu: Array<Menu>;
   /** fetch aggregated fields from the table: "menu" */
@@ -700,7 +704,7 @@ export type Query_RootAdmin_AggregateArgs = {
 
 
 export type Query_RootAdmin_By_PkArgs = {
-  username: Scalars['String'];
+  id: Scalars['uuid'];
 };
 
 
@@ -766,7 +770,7 @@ export type Subscription_RootAdmin_AggregateArgs = {
 
 
 export type Subscription_RootAdmin_By_PkArgs = {
-  username: Scalars['String'];
+  id: Scalars['uuid'];
 };
 
 
@@ -826,6 +830,13 @@ export type GetAdminByUsernameQueryVariables = Exact<{
 
 export type GetAdminByUsernameQuery = { __typename?: 'query_root', admin: Array<{ __typename?: 'admin', id: any, password: string }> };
 
+export type GetAdminByIdQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetAdminByIdQuery = { __typename?: 'query_root', admin_by_pk?: { __typename?: 'admin', id: any, username: string } | null };
+
 export type GetAdminsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -845,6 +856,14 @@ export const GetAdminByUsernameDocument = gql`
   admin(where: {username: {_eq: $username}}) {
     id
     password
+  }
+}
+    `;
+export const GetAdminByIdDocument = gql`
+    query GetAdminById($id: uuid!) {
+  admin_by_pk(id: $id) {
+    id
+    username
   }
 }
     `;
@@ -872,6 +891,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     GetAdminByUsername(variables: GetAdminByUsernameQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminByUsernameQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByUsernameQuery>(GetAdminByUsernameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdminByUsername', 'query');
+    },
+    GetAdminById(variables: GetAdminByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByIdQuery>(GetAdminByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdminById', 'query');
     },
     GetAdmins(variables?: GetAdminsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAdminsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAdminsQuery>(GetAdminsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAdmins', 'query');

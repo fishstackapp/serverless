@@ -13,7 +13,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   const {body} = event;
   const input: AdminLoginInput = JSON.parse(body!).input.admin;
 
-  const data = await api.GetAdminByUserName(
+  const data = await api.GetAdminByUsername(
     {username: input.username},
     {
       'x-hasura-admin-secret': 'myadminsecretkey'

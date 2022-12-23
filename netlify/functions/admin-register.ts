@@ -16,7 +16,6 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   }
 
   const input: AdminRegisterInput = JSON.parse(body!).input.admin;
-  console.log('body ===>', body)
 
   const password = hashPassword(input.password)
 
@@ -28,11 +27,8 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
     {'x-hasura-admin-secret': 'myadminsecretkey',}
   )
 
-  // console.log('data', data)
-
   const accessToken = signToken(data.insert_admin_one?.id)
 
-  // console.log('accessToken', accessToken)  
 
   return {
     statusCode: 200,

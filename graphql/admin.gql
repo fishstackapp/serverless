@@ -5,12 +5,12 @@ query GetAdminByUsername($username: String!) {
   }
 }
 
-# query GetAdminById($id: uuid!) {
-#   admin_by_pk(id: $id) {
-#     id
-#     username
-#   }
-# }
+query GetAdminById($id: uuid!) {
+  admin_by_pk(id: $id) {
+    id
+    username
+  }
+}
 
 query GetAdmins {
   admin {
