@@ -4,6 +4,7 @@ import { signToken } from "../common/jwt";
 import { api } from "../common/api";
 import {AdminRegisterInput} from '../common/sdk'
 import { verifyHasura } from "../common/verifyHasura";
+import { config } from "../core/config";
 
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
@@ -24,7 +25,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
       username: input.username,
       password,
     },
-    {'x-hasura-admin-secret': 'myadminsecretkey',}
+    {'x-hasura-admin-secret': config.hasuraAdminSecret,}
   )
 
   const accessToken = signToken(data.insert_admin_one?.id)

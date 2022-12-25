@@ -1,4 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
-import { getSdk } from "../common/sdk";
+import { config } from '../core/config';
+import { getSdk } from './sdk';
 
-export const api = getSdk(new GraphQLClient('http://localhost:8080/v1/graphql'))
+export const api = getSdk(new GraphQLClient(config.hasuraEndpoint))

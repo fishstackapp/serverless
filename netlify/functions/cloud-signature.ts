@@ -1,51 +1,52 @@
 import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
-import {v2 as cloudinari} from 'cloudinary'
+import {v2 as cloudinary} from 'cloudinary'
 import { getAdminFromHeaders } from "../common/getAdminFromHeaders";
 import { GetAdminByIdQuery } from "../common/sdk";
+import { config } from '../core/config';
 
-cloudinari.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+cloudinary.config({
+  cloud_name: config.cloudinaryCloudName,
+  api_key: config.cloudinaryApiKey,
+  api_secret: config.cloudinaryApiSecret,
   secure: true,
-})
+});
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   const {headers} = event;
 
   let admin: GetAdminByIdQuery;
   try {
-    admin = await getAdminFromHeaders(headers)
+    admin = await getAdminFromHeaders(headers);
   } catch (error) {
-    return JSON.parse(error.message)
+    return JSON.parse(error.message);
   }
 
-  if(!admin.admin_by_pk?.id){
+  if (!admin.admin_by_pk?.id) {
     return {
       statusCode: 403,
-      body: JSON.stringify({message: 'Forbidden'}),
+      body: JSON.stringify({ message: 'Forbidden' }),
     };
   }
 
-  const timestamp = Math.round((new Date).getTime() / 1000)
-  const publicId = `menu-${timestamp}`
+  const timestamp = Math.round(new Date().getTime() / 1000);
+  const publicId = `menu-${timestamp}`;
 
-  const signature = cloudinari.utils.api_sign_request(
+  const signature = cloudinary.utils.api_sign_request(
     {
       timestamp,
       folder: 'menu',
-      publik_id: publicId,
+      public_id: publicId,
     },
-    process.env.API_SECRET!
+    config.cloudinaryApiSecret!
   );
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ 
-      apiKey: process.env.API_KEY, 
-      cloudName: process.env.CLOUD_NAME,
-      signature, 
-      timestamp, 
+    body: JSON.stringify({
+      apiKey: config.cloudinaryApiKey,
+      cloudName: config.cloudinaryCloudName,
+      signature,
+      timestamp,
       publicId,
     }),
   };

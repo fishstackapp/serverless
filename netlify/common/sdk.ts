@@ -496,7 +496,7 @@ export type Menu_Variance_Fields = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
-  /** Admin register */
+  /** Admin registration */
   adminRegister?: Maybe<AdminRegisterOutput>;
   /** delete data from the table: "admin" */
   delete_admin?: Maybe<Admin_Mutation_Response>;
@@ -663,13 +663,13 @@ export type Query_Root = {
   admin: Array<Admin>;
   /** Admin get me */
   adminGetMe?: Maybe<AdminGetMeOutput>;
-  /** Admin login */
+  /** Login admin */
   adminLogin?: Maybe<AdminLoginOutput>;
   /** fetch aggregated fields from the table: "admin" */
   admin_aggregate: Admin_Aggregate;
   /** fetch data from the table: "admin" using primary key columns */
   admin_by_pk?: Maybe<Admin>;
-  /** Cloud signature */
+  /** Cloudinary signature */
   cloudinarySignature?: Maybe<CloudinarySignatureOutput>;
   /** fetch data from the table: "menu" */
   menu: Array<Menu>;

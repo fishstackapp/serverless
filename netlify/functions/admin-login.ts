@@ -3,6 +3,7 @@ import { api } from "../common/api";
 import { hashPassword } from "../common/password";
 import {AdminLoginInput} from '../common/sdk'
 import { signToken } from "../common/jwt";
+import { config } from "../core/config";
 
 const invalidUserorPassword = {
   statusCode: 404,
@@ -16,7 +17,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   const data = await api.GetAdminByUsername(
     {username: input.username},
     {
-      'x-hasura-admin-secret': 'myadminsecretkey'
+      'x-hasura-admin-secret': config.hasuraAdminSecret
     }
   )
 
