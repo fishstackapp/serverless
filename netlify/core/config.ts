@@ -1,7 +1,7 @@
 export const config = {
   //HASURA
   hasuraEndpoint: process.env.HASURA_ENDPOINT,
-  hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET,
+  hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
   hasuraFishstackSecret: process.env.HASURA_FISHSTACK_SECRET,
   // MISC
   jwtSecret: process.env.JWT_SECRET,
