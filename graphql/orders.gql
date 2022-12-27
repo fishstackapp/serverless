@@ -1,0 +1,12 @@
+mutation CreateFackeOrder($client_address: String!, $client_name: String!, $client_phone: String!) {
+  insert_orders_one(
+    object: {
+      client_address: $client_address
+      client_name: $client_name
+      client_phone: $client_phone
+      status: DELIVERED
+    }
+  ) {
+    id
+  }
+}

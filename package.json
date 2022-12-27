@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@faker-js/faker": "^7.6.0",
     "@types/node": "^18.11.17",
     "cloudinary": "^1.33.0",
     "D": "^1.0.0",
