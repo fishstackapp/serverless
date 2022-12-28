@@ -16,7 +16,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   } = queryStringParameters;
   const amount = Number(amountRaw);
   const recent = Number(recentRaw);
-  const forceCreate = forceCreateRow === "true";
+  const forceCreate = forceCreateRow === 'true';
 
   try {
     verifyHasura(headers);
