@@ -4,7 +4,6 @@ import { DateTime } from 'luxon';
 import { api } from '../common/api';
 import { CreateFackeOrderMutationVariables, Payment_Types_Enum } from '../common/sdk';
 import { verifyHasura } from '../common/verifyHasura';
-import { config } from '../core/config';
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   const { headers, queryStringParameters } = event;
@@ -67,10 +66,18 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
     const secondGroupItem =
       menuItems.secondGroup[faker.datatype.number({ max: secondGroupLength - 1 })].id;
 
+    const generateOrderItem = (menuid: string) => {
+      return {
+        order_id: newOrder.insert_orders_one.id,
+        menu_id: menuid,
+        amount: faker.datatype.boolean() ? 2 : 1,
+      }
+    }
+
     await api.AddItemsToOrder({
       objects: [
-        { order_id: newOrder.insert_orders_one.id, menu_id: firstGroupItem },
-        { order_id: newOrder.insert_orders_one.id, menu_id: secondGroupItem },
+        generateOrderItem(firstGroupItem),
+        generateOrderItem(secondGroupItem),
       ],
     });
   }
