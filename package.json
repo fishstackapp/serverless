@@ -19,6 +19,7 @@
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "@types/node": "^18.11.17",
+    "axios": "^1.2.2",
     "cloudinary": "^1.33.0",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",

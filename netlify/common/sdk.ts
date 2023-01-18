@@ -3776,7 +3776,7 @@ export const GetMenuItemsGroupByCategoryIdDocument = gql`
 export const CreateFackeOrderDocument = gql`
     mutation CreateFackeOrder($client_address: String!, $client_name: String!, $client_phone: String!, $created_at: timestamptz, $comment: String = "", $payment_type: payment_types_enum!) {
   insert_orders_one(
-    object: {client_address: $client_address, client_name: $client_name, client_phone: $client_phone, status: DELIVERED, created_at: $created_at, comment: $comment, payment_type: $payment_type}
+    object: {client_address: $client_address, client_name: $client_name, client_phone: $client_phone, status: NEW, created_at: $created_at, comment: $comment, payment_type: $payment_type}
   ) {
     id
   }

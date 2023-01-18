@@ -1,7 +1,8 @@
 import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
 import { api } from '../common/api';
 import { verifyHasura } from '../common/verifyHasura';
-import { config } from '../core/config';
+import { createNewCustomer } from '../hasura/create-new-customer';
+import { sendNotificationToAdmin } from '../hasura/send-notification-to-admin';
 import { HasuraEventBody, HasuraEvents } from '../dto/hasura-event-body.dto';
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
@@ -20,26 +21,13 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   } = body;
 
   if (triggerName === HasuraEvents.ORDER_CREATED) {
-    const {
-      event: {
-        data: { new: order },
-      },
-    } = body;
-  
-    await api.CreateNewCustomer({
-      phone: order.client_phone,
-      name: order.client_name,
-      address: order.client_address,
-    },
-    {
-      'x-hasura-admin-secret': config.hasuraAdminSecret,
-    });
+    await Promise.all([createNewCustomer(body), sendNotificationToAdmin(body)]);
   }
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      status: "OK"
+      status: 'OK',
     }),
   };
 };
