@@ -18,6 +18,7 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
   }
 
   const input: CustomerLoginInput = JSON.parse(body).input.input;
+
   let phoneNumber;
 
   try {
@@ -26,17 +27,18 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
     return JSON.parse(error.message);
   }
 
+
   const verification = await twilioClient.verify.v2
     .services(config.twilioServiceSid)
     .verifications.create({ to: phoneNumber, channel: 'sms' });
-
-  await api.RegisterNewCustomer(
-    {
-      phone: phoneNumber,
-      twilioVerificationSid: verification.sid,
-    },
-    { 'x-hasura-admin-secret': config.hasuraAdminSecret }
-  );
+    
+    await api.RegisterNewCustomer(
+      {
+        phone: phoneNumber,
+        twilioVerificationSid: verification.sid,
+      },
+      { 'x-hasura-admin-secret': config.hasuraAdminSecret }
+      );
 
   return {
     statusCode: 200,
@@ -45,5 +47,6 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
     }),
   };
 };
+  
 
 export { handler };
