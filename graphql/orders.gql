@@ -27,6 +27,7 @@ mutation CreateOrder(
   $client_phone: String!
   $comment: String = ""
   $payment_type: payment_types_enum = CARD
+  $payment_status: payment_status_enum = null
 ) {
   insert_orders_one(
     object: {
@@ -36,8 +37,27 @@ mutation CreateOrder(
       comment: $comment
       payment_type: $payment_type
       status: NEW
+      payment_status: $payment_status
     }
   ) {
+    id
+  }
+}
+
+mutation UpdateOrderPaymentId($id: uuid!, $payment_id: Int!) {
+  update_orders_by_pk(pk_columns: { id: $id }, _set: { payment_id: $payment_id }) {
+    id
+  }
+}
+
+mutation UpdateOrderPaymentStatusById($id: uuid!, $payment_status: payment_status_enum!) {
+  update_orders_by_pk(pk_columns: { id: $id }, _set: { payment_status: $payment_status }) {
+    id
+  }
+}
+
+mutation DeleteOrderById($id: uuid!) {
+  delete_orders_by_pk(id: $id) {
     id
   }
 }

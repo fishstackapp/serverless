@@ -1,9 +1,9 @@
 import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
-import { api } from '../common/api';
 import { verifyHasura } from '../common/verifyHasura';
 import { createNewCustomer } from '../hasura/create-new-customer';
 import { sendNotificationToAdmin } from '../hasura/send-notification-to-admin';
 import { HasuraEventBody, HasuraEvents } from '../dto/hasura-event-body.dto';
+import { setPaymentStatus } from '../hasura/set-payment-status';
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   const { headers, body: bodyRaw } = event;
@@ -22,6 +22,8 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
 
   if (triggerName === HasuraEvents.ORDER_CREATED) {
     await Promise.all([createNewCustomer(body), sendNotificationToAdmin(body)]);
+  }else if (triggerName === HasuraEvents.ORDER_UPDATED){
+    await setPaymentStatus(body)
   }
 
   return {
