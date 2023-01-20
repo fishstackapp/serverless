@@ -5,13 +5,15 @@ import { Payment_Status_Enum } from '../common/sdk';
 import { FondyCallbackResponseDTO } from '../dto/fondy-callback-response.dto';
 
 const keysFilter = (body: FondyCallbackResponseDTO) => (key: string) =>
-  body[key] !== '' && body[key] !== body.response_signature_string && body[key] !== body.signature;
+  body[key] !== '' &&
+  body[key] !== body.response_signature_string &&
+  body[key] !== body.signature;
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   const { headers, body } = event;
 
   const fondyBody: FondyCallbackResponseDTO = JSON.parse(body);
-  const signature = generateSignature(fondyBody);
+  const signature = generateSignature(fondyBody, keysFilter);
 
   if (signature !== fondyBody.signature) {
     throw new Error('Invalid signature');
