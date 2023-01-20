@@ -16,7 +16,7 @@ export const sendNotificationToAdmin = async (body: HasuraEventBody) => {
     const ids = admins.admin.map(admin => admin.id);
 
     try {
-      const data = await axios.post(
+      await axios.post(
         'https://onesignal.com/api/v1/notifications',
         {
           app_id: config.onesignalAppId,
@@ -32,8 +32,10 @@ export const sendNotificationToAdmin = async (body: HasuraEventBody) => {
         }
       );
     } catch (error) {
-      console.log((error as AxiosError).response.data)
-      console.log('Error sending notification to admin');
+      console.log(
+        'Error sending notifcation to admin',
+        (error as AxiosError).response.data
+      );
     }
   }
 };

@@ -2011,6 +2011,13 @@ export type Order_Status_Mutation_Response = {
   returning: Array<Order_Status>;
 };
 
+/** input type for inserting object relation for remote table "order_status" */
+export type Order_Status_Obj_Rel_Insert_Input = {
+  data: Order_Status_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Order_Status_On_Conflict>;
+};
+
 /** on_conflict condition type for table "order_status" */
 export type Order_Status_On_Conflict = {
   constraint: Order_Status_Constraint;
@@ -2087,6 +2094,12 @@ export type Orders = {
   order_items: Array<Orders_Menu>;
   /** An aggregate relationship */
   order_items_aggregate: Orders_Menu_Aggregate;
+  /** An object relationship */
+  order_status: Order_Status;
+  /** An object relationship */
+  paymentStatusByPaymentStatus?: Maybe<Payment_Status>;
+  /** An object relationship */
+  paymentTypeByPaymentType: Payment_Types;
   payment_id?: Maybe<Scalars['Int']>;
   payment_status?: Maybe<Payment_Status_Enum>;
   payment_type: Payment_Types_Enum;
@@ -2203,6 +2216,9 @@ export type Orders_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   order_items?: InputMaybe<Orders_Menu_Bool_Exp>;
   order_items_aggregate?: InputMaybe<Orders_Menu_Aggregate_Bool_Exp>;
+  order_status?: InputMaybe<Order_Status_Bool_Exp>;
+  paymentStatusByPaymentStatus?: InputMaybe<Payment_Status_Bool_Exp>;
+  paymentTypeByPaymentType?: InputMaybe<Payment_Types_Bool_Exp>;
   payment_id?: InputMaybe<Int_Comparison_Exp>;
   payment_status?: InputMaybe<Payment_Status_Enum_Comparison_Exp>;
   payment_type?: InputMaybe<Payment_Types_Enum_Comparison_Exp>;
@@ -2231,6 +2247,9 @@ export type Orders_Insert_Input = {
   customer?: InputMaybe<Customers_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   order_items?: InputMaybe<Orders_Menu_Arr_Rel_Insert_Input>;
+  order_status?: InputMaybe<Order_Status_Obj_Rel_Insert_Input>;
+  paymentStatusByPaymentStatus?: InputMaybe<Payment_Status_Obj_Rel_Insert_Input>;
+  paymentTypeByPaymentType?: InputMaybe<Payment_Types_Obj_Rel_Insert_Input>;
   payment_id?: InputMaybe<Scalars['Int']>;
   payment_status?: InputMaybe<Payment_Status_Enum>;
   payment_type?: InputMaybe<Payment_Types_Enum>;
@@ -2635,6 +2654,9 @@ export type Orders_Order_By = {
   customer?: InputMaybe<Customers_Order_By>;
   id?: InputMaybe<Order_By>;
   order_items_aggregate?: InputMaybe<Orders_Menu_Aggregate_Order_By>;
+  order_status?: InputMaybe<Order_Status_Order_By>;
+  paymentStatusByPaymentStatus?: InputMaybe<Payment_Status_Order_By>;
+  paymentTypeByPaymentType?: InputMaybe<Payment_Types_Order_By>;
   payment_id?: InputMaybe<Order_By>;
   payment_status?: InputMaybe<Order_By>;
   payment_type?: InputMaybe<Order_By>;
@@ -2821,6 +2843,30 @@ export type Payment_Status = {
   __typename?: 'payment_status';
   id: Scalars['String'];
   label: Scalars['String'];
+  /** An array relationship */
+  orders: Array<Orders>;
+  /** An aggregate relationship */
+  orders_aggregate: Orders_Aggregate;
+};
+
+
+/** columns and relationships of "payment_status" */
+export type Payment_StatusOrdersArgs = {
+  distinct_on?: InputMaybe<Array<Orders_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Orders_Order_By>>;
+  where?: InputMaybe<Orders_Bool_Exp>;
+};
+
+
+/** columns and relationships of "payment_status" */
+export type Payment_StatusOrders_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Orders_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Orders_Order_By>>;
+  where?: InputMaybe<Orders_Bool_Exp>;
 };
 
 /** aggregated selection of "payment_status" */
@@ -2852,6 +2898,8 @@ export type Payment_Status_Bool_Exp = {
   _or?: InputMaybe<Array<Payment_Status_Bool_Exp>>;
   id?: InputMaybe<String_Comparison_Exp>;
   label?: InputMaybe<String_Comparison_Exp>;
+  orders?: InputMaybe<Orders_Bool_Exp>;
+  orders_aggregate?: InputMaybe<Orders_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "payment_status" */
@@ -2882,6 +2930,7 @@ export type Payment_Status_Enum_Comparison_Exp = {
 export type Payment_Status_Insert_Input = {
   id?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<Orders_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -2907,6 +2956,13 @@ export type Payment_Status_Mutation_Response = {
   returning: Array<Payment_Status>;
 };
 
+/** input type for inserting object relation for remote table "payment_status" */
+export type Payment_Status_Obj_Rel_Insert_Input = {
+  data: Payment_Status_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Payment_Status_On_Conflict>;
+};
+
 /** on_conflict condition type for table "payment_status" */
 export type Payment_Status_On_Conflict = {
   constraint: Payment_Status_Constraint;
@@ -2918,6 +2974,7 @@ export type Payment_Status_On_Conflict = {
 export type Payment_Status_Order_By = {
   id?: InputMaybe<Order_By>;
   label?: InputMaybe<Order_By>;
+  orders_aggregate?: InputMaybe<Orders_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: payment_status */
@@ -2972,6 +3029,30 @@ export type Payment_Types = {
   __typename?: 'payment_types';
   id: Scalars['String'];
   label: Scalars['String'];
+  /** An array relationship */
+  orders: Array<Orders>;
+  /** An aggregate relationship */
+  orders_aggregate: Orders_Aggregate;
+};
+
+
+/** columns and relationships of "payment_types" */
+export type Payment_TypesOrdersArgs = {
+  distinct_on?: InputMaybe<Array<Orders_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Orders_Order_By>>;
+  where?: InputMaybe<Orders_Bool_Exp>;
+};
+
+
+/** columns and relationships of "payment_types" */
+export type Payment_TypesOrders_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Orders_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Orders_Order_By>>;
+  where?: InputMaybe<Orders_Bool_Exp>;
 };
 
 /** aggregated selection of "payment_types" */
@@ -3003,6 +3084,8 @@ export type Payment_Types_Bool_Exp = {
   _or?: InputMaybe<Array<Payment_Types_Bool_Exp>>;
   id?: InputMaybe<String_Comparison_Exp>;
   label?: InputMaybe<String_Comparison_Exp>;
+  orders?: InputMaybe<Orders_Bool_Exp>;
+  orders_aggregate?: InputMaybe<Orders_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "payment_types" */
@@ -3033,6 +3116,7 @@ export type Payment_Types_Enum_Comparison_Exp = {
 export type Payment_Types_Insert_Input = {
   id?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<Orders_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -3058,6 +3142,13 @@ export type Payment_Types_Mutation_Response = {
   returning: Array<Payment_Types>;
 };
 
+/** input type for inserting object relation for remote table "payment_types" */
+export type Payment_Types_Obj_Rel_Insert_Input = {
+  data: Payment_Types_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Payment_Types_On_Conflict>;
+};
+
 /** on_conflict condition type for table "payment_types" */
 export type Payment_Types_On_Conflict = {
   constraint: Payment_Types_Constraint;
@@ -3069,6 +3160,7 @@ export type Payment_Types_On_Conflict = {
 export type Payment_Types_Order_By = {
   id?: InputMaybe<Order_By>;
   label?: InputMaybe<Order_By>;
+  orders_aggregate?: InputMaybe<Orders_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: payment_types */
@@ -3138,7 +3230,6 @@ export type Query_Root = {
   categories_by_pk?: Maybe<Categories>;
   /** Cloudinary signature */
   cloudinarySignature?: Maybe<CloudinarySignatureOutput>;
-  /** Customer login */
   customerLogin?: Maybe<CustomerLoginOutput>;
   /** Customer verify code */
   customerVerifyCode?: Maybe<CustomerVerifyCodeOutput>;
