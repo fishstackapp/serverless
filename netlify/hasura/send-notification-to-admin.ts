@@ -21,7 +21,9 @@ export const sendNotificationToAdmin = async (body: HasuraEventBody) => {
         {
           app_id: config.onesignalAppId,
           include_external_user_id: ids,
-          contents: { uk: 'Нове замовлення!' },
+          contents: {
+            en: 'Нове замовлення',
+          },
           name: `NEW_ORDER_${order.id}`,
           url: `${config.adminFrontendURL}/#/orders/${order.id}/show`,
         },
@@ -32,10 +34,7 @@ export const sendNotificationToAdmin = async (body: HasuraEventBody) => {
         }
       );
     } catch (error) {
-      console.log(
-        'Error sending notifcation to admin',
-        (error as AxiosError).response.data
-      );
+      console.log('Error sending notifcation to admin', (error as AxiosError).response.data);
     }
   }
 };
