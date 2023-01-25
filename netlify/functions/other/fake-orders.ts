@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
 import { DateTime } from 'luxon';
-import { api } from '../common/api';
-import { CreateFackeOrderMutationVariables, Payment_Types_Enum } from '../common/sdk';
-import { verifyHasura } from '../common/verifyHasura';
+import { api } from '../../common/api';
+import { CreateFackeOrderMutationVariables, Payment_Types_Enum } from '../../common/sdk';
+import { verifyHasura } from '../../common/verifyHasura';
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   const { headers, queryStringParameters } = event;
